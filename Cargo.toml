@@ -8,6 +8,7 @@ time = "*"
 rand="*"
 timely="0.0.*"
 timely_sort="0.1.*"
+nix="*"
 
 [profile.release]
 opt-level = 3
