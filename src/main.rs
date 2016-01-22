@@ -1,3 +1,4 @@
+extern crate nix;
 extern crate rand;
 extern crate time;
 extern crate timely;
@@ -14,10 +15,18 @@ fn main () {
     let node_cnt = std::env::args().skip(1).next().unwrap().parse::<usize>().unwrap();
     let edge_cnt = std::env::args().skip(2).next().unwrap().parse::<usize>().unwrap();
 
+    let cpu_stride = std::env::args().skip(3).next().unwrap().parse::<usize>().unwrap();
+
     timely::execute_from_args(std::env::args(), move |root| {
 
         let index = root.index() as usize;
         let peers = root.peers() as usize;
+
+        // core pinning
+        let mut cpu_set = ::nix::sched::CpuSet::new();
+        let tgt_cpu = index * cpu_stride;
+        cpu_set.set(tgt_cpu);
+        let result = ::nix::sched::sched_setaffinity(0, &cpu_set);
 
         let start = time::precise_time_s();
 
