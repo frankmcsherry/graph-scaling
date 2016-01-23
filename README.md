@@ -20,3 +20,9 @@ Experiment parameters are currently:
 For example, the following is a command line I recently used to start two threads, looking at the livejournal graph, with workers pinned to their corresponding cores:
 
     cargo run --release --bin computation1 -- -w2 -- --graph ~/Projects/Datasets/soc-LiveJournal1 --stride 1
+
+### Computation 1
+
+Computation 1 is the most naive graph computation we could think of. Each worker partitions edges by the source of the edge and maintains per-node state for each source. Each iteration, for each edge the worker has, the worker announces the state at the source to the destination, causing a large data exchange. Workers then receive messages and apply the updates to the state of the corresponding nodes.
+
+No intelligent data preparation is performed.
