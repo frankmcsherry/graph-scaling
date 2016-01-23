@@ -15,7 +15,7 @@ Experiment parameters are currently:
 *  `--graph <prefix>` indicates a graph to use as input. The format is that used by the [graph_map](https://github.com/frankmcsherry/graph-map) library. There are binaries `parse` and `parse-pairs` in the `src/bin/` directory that can help put graph data in the correct format.
 *  `--nodes <number>` indicates a number of nodes to use in a random graph. This is mandatory if `--graph` isn't specified.
 *  `--edges <number>` indicates a number of edges to use in a random graph. This is mandatory if `--graph` isn't specified.
-*  `--stride <number>` indicates a multiplier to apply to worker indices when pinning them to cores. A value of zero disables core pinning.
+*  `--stride <number>` indicates a multiplier to apply to worker indices when pinning them to cores. A value of zero disables core pinning. Note that core pinning only works on linux at the moment (using the `nix` crate).
 
 For example, the following is a command line I recently used to start two threads, looking at the livejournal graph, with workers pinned to their corresponding cores:
 
