@@ -16,3 +16,7 @@ Experiment parameters are currently:
 *  `--nodes <number>` indicates a number of nodes to use in a random graph. This is mandatory if `--graph` isn't specified.
 *  `--edges <number>` indicates a number of edges to use in a random graph. This is mandatory if `--graph` isn't specified.
 *  `--stride <number>` indicates a multiplier to apply to worker indices when pinning them to cores. A value of zero disables core pinning.
+
+For example, the following is a command line I recently used to start two threads, looking at the livejournal graph, with workers pinned to their corresponding cores:
+
+    cargo run --release --bin computation1 -- -w2 -- --graph ~/Projects/Datasets/soc-LiveJournal1 --stride 1
