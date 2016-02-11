@@ -7,17 +7,17 @@ extern crate graph_map;
 
 use rand::{Rng, SeedableRng, StdRng};
 
-#[cfg(linux)]
-fn pin_to_core(core: usize) {
+#[cfg(target_os = "linux")]
+fn pin_to_core(index:usize, core: usize) {
     let mut cpu_set = ::nix::sched::CpuSet::new();
-    let tgt_cpu = index * cpu_stride;
+    let tgt_cpu = index * core;
     cpu_set.set(tgt_cpu);
     let result = ::nix::sched::sched_setaffinity(0, &cpu_set);
 }
 
-#[cfg(not(linux))]
+#[cfg(not(target_os = "linux"))]
 fn pin_to_core(_core: usize) {
-
+   println!("not linux!");
 }
 
 // pins the core in the process, which is a bit silly.
@@ -39,7 +39,7 @@ pub fn fetch_edges(index: usize, peers: usize) -> (Vec<(u32, u32)>, usize) {
     if let Some(stride) = matches.opt_str("stride") {
         if let Ok(cpu_stride) = stride.parse::<usize>() {
             if cpu_stride > 0 {
-                pin_to_core(cpu_stride);
+                pin_to_core(index, cpu_stride);
             }
         }
         else {
